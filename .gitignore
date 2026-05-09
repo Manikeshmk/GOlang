@@ -1,0 +1,89 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.so.*
+*.dylib
+*.o
+*.a
+*.out
+
+# Go workspace file
+go.work
+
+# Dependency directories
+vendor/
+node_modules/
+dist/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.test
+
+# Secrets and keys
+secrets/
+keys/
+*.pem
+*.key
+*.crt
+*.cert
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*.iml
+*.sublime-*
+.DS_Store
+Thumbs.db
+
+# Build and test artifacts
+bin/
+dist/
+build/
+coverage.out
+*.test
+*.cover
+
+# Database and cache
+*.db
+*.sqlite
+*.sqlite3
+postgres-data/
+redis-data/
+kafka-data/
+
+# Logs
+logs/
+*.log
+
+# Local recordings and temp files
+recordings/
+uploads/
+temp/
+cache/
+
+# Docker
+docker-compose.override.yml
+
+# Python venv
+.venv/
+venv/
+ENV/
+env/
+
+# Node modules and build
+frontend/node_modules/
+frontend/dist/
+frontend/.next/
+frontend/out/
+
+# Private certificate files
+*.p12
+*.pfx
