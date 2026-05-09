@@ -1,165 +1,294 @@
-"# Silent Meeting Summarizer
+# Silent Meeting Summarizer
 
-[![CI/CD Pipeline](https://github.com/Manikeshmk/GOlang/workflows/CI%2FCD%20Pipeline/badge.svg)](https://github.com/Manikeshmk/GOlang/actions)
-[![codecov](https://codecov.io/gh/Manikeshmk/GOlang/branch/main/graph/badge.svg)](https://codecov.io/gh/Manikeshmk/GOlang)
-[![Go Report Card](https://goreportcard.com/badge/github.com/Manikeshmk/GOlang)](https://goreportcard.com/report/github.com/Manikeshmk/GOlang)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:00ADD8,45:111827,100:7C3AED&text=Silent%20Meeting%20Summarizer&fontColor=ffffff&fontSize=42&fontAlignY=38&desc=Local-first%20AI%20meeting%20intelligence%20for%20summaries,%20tasks,%20decisions,%20and%20conflicts&descAlignY=60&descSize=16" alt="Silent Meeting Summarizer banner" />
+</p>
 
-A production-grade AI-powered meeting assistant that records audio, performs speaker diarization, generates intelligent summaries, extracts action items, and detects conflicts—all with a focus on local-first processing and optional cloud AI integrations.
+<p align="center">
+  <a href="https://github.com/Manikeshmk/GOlang/actions"><img src="https://github.com/Manikeshmk/GOlang/workflows/CI%2FCD%20Pipeline/badge.svg" alt="CI/CD Pipeline" /></a>
+  <a href="https://codecov.io/gh/Manikeshmk/GOlang"><img src="https://codecov.io/gh/Manikeshmk/GOlang/branch/main/graph/badge.svg" alt="Codecov" /></a>
+  <a href="https://goreportcard.com/report/github.com/Manikeshmk/GOlang"><img src="https://goreportcard.com/badge/github.com/Manikeshmk/GOlang" alt="Go Report Card" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License" /></a>
+  <img src="https://img.shields.io/badge/status-production--ready-16a34a?style=flat-square" alt="Production Ready" />
+</p>
 
-## 🎯 Features
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=go,docker,kubernetes,postgres,redis,kafka,prometheus,react,nextjs,ts,tailwind,githubactions" alt="Technology logos" />
+</p>
 
-### Core Capabilities
+<p align="center">
+  <b>A production-grade AI meeting assistant that records audio, performs speaker diarization, generates summaries, extracts action items, detects conflict, and keeps processing local-first with optional cloud AI.</b>
+</p>
 
-- **Real-Time Audio Processing**: Streamed audio ingestion with buffering and backpressure handling
-- **Speech-to-Text**: Multi-provider support (Whisper, OpenAI) with automatic fallback
-- **Speaker Diarization**: Unique speaker detection and tracking with embeddings
-- **AI Summarization**: Multiple summary types (concise, detailed, executive)
-- **Task Extraction**: Automatic identification of action items with owners and deadlines
-- **Conflict Detection**: Disagreement intensity scoring and unresolved topic identification
-- **Confusion Detection**: Recognition of hesitation patterns and clarification requests
-- **Decision Analysis**: Confidence scoring for decision finalization
-- **Sentiment Analysis**: Real-time emotion tracking throughout meetings
-- **Topic Clustering**: Detection of repeated discussion topics and wasted time estimation
+---
 
-### Technical Features
+## Table of Contents
 
-- **Production-Ready**: Structured logging, metrics, tracing, and health checks
-- **Scalable**: Horizontal scaling with Kubernetes, worker pools, pub/sub messaging
-- **Secure**: JWT authentication, RBAC, input validation, encrypted secrets
-- **Observable**: Prometheus metrics, Jaeger tracing, structured logging
-- **Dockerized**: Complete Docker and Kubernetes deployment manifests
-- **Tested**: Unit, integration, and load testing infrastructure
-- **Documented**: API docs, deployment guides, architecture diagrams
+- [Why It Exists](#why-it-exists)
+- [Feature Highlights](#feature-highlights)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Quick Start](#quick-start)
+- [API Endpoints](#api-endpoints)
+- [Project Structure](#project-structure)
+- [Docker Services](#docker-services)
+- [Testing](#testing)
+- [Monitoring](#monitoring)
+- [Security](#security)
+- [Deployment](#deployment)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
 
-## 🚀 Quick Start
+## Why It Exists
+
+Meetings create a lot of information, but most of it is hard to reuse: scattered decisions, unclear ownership, repeated topics, unresolved disagreements, and minutes that arrive too late. Silent Meeting Summarizer turns meeting audio into structured intelligence:
+
+- clear summaries for different audiences
+- speaker-aware transcripts
+- decisions with confidence signals
+- action items with owners and due dates
+- conflict, confusion, sentiment, and repeated-topic analysis
+- local-first AI pipelines with optional OpenAI/Ollama integrations
+
+## Feature Highlights
+
+<table>
+  <tr>
+    <td width="50%">
+      <h3>Audio Intelligence</h3>
+      <ul>
+        <li>Real-time streamed audio ingestion</li>
+        <li>Buffering and backpressure handling</li>
+        <li>Speech-to-text with provider fallback</li>
+        <li>Speaker diarization and participant tracking</li>
+      </ul>
+    </td>
+    <td width="50%">
+      <h3>Meeting Understanding</h3>
+      <ul>
+        <li>Concise, detailed, and executive summaries</li>
+        <li>Task extraction with owners and deadlines</li>
+        <li>Decision confidence analysis</li>
+        <li>Topic clustering and wasted-time estimation</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>Risk Signals</h3>
+      <ul>
+        <li>Conflict detection and disagreement scoring</li>
+        <li>Unresolved topic identification</li>
+        <li>Confusion and clarification-request detection</li>
+        <li>Sentiment tracking across the meeting</li>
+      </ul>
+    </td>
+    <td width="50%">
+      <h3>Production Foundation</h3>
+      <ul>
+        <li>JWT authentication and RBAC</li>
+        <li>Prometheus metrics and Jaeger tracing</li>
+        <li>Docker and Kubernetes manifests</li>
+        <li>Structured logging and health checks</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+## Tech Stack
+
+### Backend
+
+<p>
+  <img src="https://img.shields.io/badge/Go-1.23+-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go" />
+  <img src="https://img.shields.io/badge/Gin-HTTP%20API-008ECF?style=for-the-badge&logo=gin&logoColor=white" alt="Gin" />
+  <img src="https://img.shields.io/badge/gRPC-services-244C5A?style=for-the-badge&logo=grpc&logoColor=white" alt="gRPC" />
+  <img src="https://img.shields.io/badge/WebSocket-realtime-010101?style=for-the-badge&logo=socketdotio&logoColor=white" alt="WebSocket" />
+  <img src="https://img.shields.io/badge/Zap-logging-f97316?style=for-the-badge&logo=go&logoColor=white" alt="Zap logging" />
+</p>
+
+### Data and Messaging
+
+<p>
+  <img src="https://img.shields.io/badge/PostgreSQL-16+-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Redis-7+-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis" />
+  <img src="https://img.shields.io/badge/NATS-messaging-27AAE1?style=for-the-badge&logo=natsdotio&logoColor=white" alt="NATS" />
+  <img src="https://img.shields.io/badge/Apache%20Kafka-events-231F20?style=for-the-badge&logo=apachekafka&logoColor=white" alt="Apache Kafka" />
+  <img src="https://img.shields.io/badge/ZooKeeper-coordination-6DB33F?style=for-the-badge&logo=apache&logoColor=white" alt="Apache ZooKeeper" />
+</p>
+
+### AI and Observability
+
+<p>
+  <img src="https://img.shields.io/badge/OpenAI-optional%20AI-412991?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI" />
+  <img src="https://img.shields.io/badge/Ollama-local%20LLM-000000?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama" />
+  <img src="https://img.shields.io/badge/Whisper-speech--to--text-111827?style=for-the-badge&logo=openai&logoColor=white" alt="Whisper" />
+  <img src="https://img.shields.io/badge/Prometheus-metrics-E6522C?style=for-the-badge&logo=prometheus&logoColor=white" alt="Prometheus" />
+  <img src="https://img.shields.io/badge/Jaeger-tracing-65A2C8?style=for-the-badge&logo=jaeger&logoColor=white" alt="Jaeger" />
+</p>
+
+### Frontend and Platform
+
+<p>
+  <img src="https://img.shields.io/badge/Next.js-14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=111827" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind%20CSS-3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Docker-containers-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Kubernetes-orchestration-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white" alt="Kubernetes" />
+  <img src="https://img.shields.io/badge/GitHub%20Actions-CI/CD-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
+</p>
+
+## Architecture
+
+```mermaid
+flowchart TB
+    client["Web / Mobile / Integrations"]
+    gateway["API Gateway / Ingress"]
+    api["Go API<br/>Gin + REST + WebSocket"]
+    worker["Background Workers"]
+    ai["AI Services<br/>Whisper + Ollama + OpenAI"]
+    repo["Repository Layer"]
+    postgres[("PostgreSQL")]
+    redis[("Redis Cache")]
+    nats["NATS"]
+    kafka["Kafka"]
+    prom["Prometheus"]
+    jaeger["Jaeger"]
+
+    client --> gateway --> api
+    api --> worker
+    api --> ai
+    api --> repo
+    worker --> ai
+    worker --> repo
+    repo --> postgres
+    api --> redis
+    worker --> redis
+    api --> nats
+    worker --> kafka
+    api -. metrics .-> prom
+    worker -. metrics .-> prom
+    api -. traces .-> jaeger
+    worker -. traces .-> jaeger
+```
+
+## Quick Start
 
 ### Prerequisites
 
 - Go 1.23+
-- Docker & Docker Compose (optional but recommended)
+- Docker and Docker Compose
 - PostgreSQL 16+
 - Redis 7+
-- Node.js 18+ (for frontend)
+- Node.js 18+ for the frontend
 
 ### Local Development
-
-1. **Clone and Setup**
 
 ```bash
 git clone https://github.com/Manikeshmk/GOlang.git
 cd GOlang
 cp .env.example .env
-```
-
-2. **Install Dependencies**
-
-```bash
 go mod download
 make install-deps
-```
-
-3. **Start Services with Docker Compose**
-
-```bash
 make docker-up
-```
-
-4. **Run Migrations and Start API**
-
-```bash
 make run
 ```
 
-The API will be available at `http://localhost:8080`
+The API runs at:
 
-### Using Docker
+```text
+http://localhost:8080
+```
+
+### Docker Workflow
 
 ```bash
-# Build image
 make docker-build
-
-# Start all services
 make docker-up
-
-# View logs
 make docker-logs
-
-# Stop services
 make docker-down
 ```
 
-## 📁 Project Structure
-
-```
-.
-├── cmd/
-│   ├── api/                 # API server entry point
-│   └── worker/              # Background worker processes
-├── internal/
-│   ├── ai/                  # AI/ML services
-│   ├── audio/               # Audio processing
-│   ├── config/              # Configuration management
-│   ├── domain/              # Domain models
-│   ├── handler/             # HTTP handlers
-│   ├── logger/              # Logging setup
-│   ├── middleware/          # HTTP middleware
-│   ├── metrics/             # Prometheus metrics
-│   ├── repository/          # Data access layer
-│   ├── service/             # Business logic
-│   └── streaming/           # WebSocket/gRPC streaming
-├── pkg/
-│   └── utils/               # Utility functions
-├── api/
-│   └── proto/               # Protocol Buffer definitions
-├── db/
-│   └── migrations/          # Database migrations
-├── deployments/
-│   ├── docker/              # Docker files and compose
-│   └── kubernetes/          # K8s manifests
-├── web/
-│   └── frontend/            # Next.js frontend
-├── tests/
-│   ├── unit/                # Unit tests
-│   └── integration/         # Integration tests
-├── scripts/                 # Helper scripts
-├── docs/                    # Documentation
-└── Makefile                 # Make commands
-```
-
-## 🔧 API Endpoints
+## API Endpoints
 
 ### Authentication
 
-- `POST /auth/register` - Register new user
-- `POST /auth/login` - Login and get JWT token
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/auth/register` | Register a new user |
+| `POST` | `/auth/login` | Login and receive a JWT |
 
 ### Meetings
 
-- `POST /meetings` - Create new meeting
-- `GET /meetings` - List user's meetings
-- `GET /meetings/{id}` - Get meeting details
-- `POST /meetings/{id}/end` - End meeting
-
-### Tasks
-
-- `GET /meetings/{meetingId}/tasks` - Get extracted tasks
-- `POST /meetings/{meetingId}/tasks` - Create task
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `POST` | `/meetings` | Create a meeting |
+| `GET` | `/meetings` | List user meetings |
+| `GET` | `/meetings/{id}` | Get meeting details |
+| `POST` | `/meetings/{id}/end` | End a meeting |
 
 ### Analysis
 
-- `GET /meetings/{meetingId}/summary` - Get meeting summary
-- `GET /meetings/{meetingId}/conflicts` - Get detected conflicts
-- `GET /meetings/{meetingId}/decisions` - Get decisions made
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/meetings/{meetingId}/summary` | Get generated summary |
+| `GET` | `/meetings/{meetingId}/tasks` | Get extracted action items |
+| `POST` | `/meetings/{meetingId}/tasks` | Create a task manually |
+| `GET` | `/meetings/{meetingId}/conflicts` | Get detected conflicts |
+| `GET` | `/meetings/{meetingId}/decisions` | Get meeting decisions |
 
-## 🗄️ Database Schema
+## Project Structure
+
+```text
+.
+|-- cmd/
+|   |-- api/                 # API server entry point
+|   `-- worker/              # Background workers
+|-- internal/
+|   |-- ai/                  # AI/ML services
+|   |-- audio/               # Audio processing
+|   |-- config/              # Configuration
+|   |-- domain/              # Domain models
+|   |-- handler/             # HTTP handlers
+|   |-- logger/              # Logging
+|   |-- middleware/          # HTTP middleware
+|   |-- metrics/             # Prometheus metrics
+|   |-- repository/          # Data access
+|   |-- service/             # Business logic
+|   `-- streaming/           # WebSocket/gRPC streaming
+|-- api/proto/               # Protocol Buffer definitions
+|-- db/migrations/           # Database migrations
+|-- deployments/
+|   |-- docker/              # Docker files and compose
+|   `-- kubernetes/          # Kubernetes manifests
+|-- web/frontend/            # Next.js frontend
+|-- tests/                   # Unit and integration tests
+|-- scripts/                 # Helper scripts
+`-- docs/                    # Project documentation
+```
+
+## Docker Services
+
+| Service | Purpose | Default Port |
+| --- | --- | --- |
+| API | Go application server | `8080` |
+| PostgreSQL | Primary database | `5432` |
+| Redis | Cache and sessions | `6379` |
+| NATS | Lightweight messaging | `4222` |
+| Kafka | Event streaming | `9092` |
+| ZooKeeper | Kafka coordination | `2181` |
+| Ollama | Local LLM runtime | `11434` |
+| Prometheus | Metrics collection | `9090` |
+| Jaeger | Distributed tracing | `16686` |
+
+## Database Schema
 
 ```sql
--- Core tables
 users              -- User accounts
 meetings           -- Meeting sessions
-transcripts        -- Speech-to-text results
-speakers           -- Unique participants
+transcripts        -- Speech-to-text output
+speakers           -- Unique meeting participants
 summaries          -- AI-generated summaries
 tasks              -- Extracted action items
 decisions          -- Decision records
@@ -168,162 +297,123 @@ confusions         -- Confusion signals
 repeated_topics    -- Topic clustering results
 ```
 
-## 🐳 Docker Compose Services
-
-The `docker-compose.yml` includes:
-
-- **API** - Go application server
-- **PostgreSQL** - Primary database
-- **Redis** - Caching and sessions
-- **NATS** - Message broker
-- **Kafka** - Event streaming
-- **Zookeeper** - Kafka coordination
-- **Ollama** - Local LLM support
-- **Prometheus** - Metrics collection
-- **Jaeger** - Distributed tracing
-
-## ☸️ Kubernetes Deployment
-
-Deploy to Kubernetes:
+## Testing
 
 ```bash
-# Create namespace
-kubectl create namespace meeting-summarizer
-
-# Apply configs and secrets
-kubectl apply -f deployments/kubernetes/
-
-# Monitor deployment
-kubectl get pods -n meeting-summarizer
-kubectl logs -f pod/<pod-name> -n meeting-summarizer
-```
-
-## 🧪 Testing
-
-```bash
-# Run all tests
 make test
-
-# Run unit tests only
 make test-unit
-
-# Run integration tests
 make test-integration
-
-# Generate coverage report
 make coverage
-
-# Run with race detector
 go test -race ./...
-
-# Benchmark tests
 go test -bench=. ./...
 ```
 
-## 📊 Monitoring
+## Monitoring
 
-### Prometheus
-
-Access at `http://localhost:9090`
-
-- CPU, memory, goroutine metrics
-- Request latency and error rates
-- Custom application metrics
-
-### Jaeger
-
-Access at `http://localhost:16686`
-
-- Distributed tracing
-- Request flow visualization
-- Performance bottleneck identification
-
-### Health Checks
+| Tool | URL | Use |
+| --- | --- | --- |
+| Prometheus | `http://localhost:9090` | Metrics, latency, error rates, runtime stats |
+| Jaeger | `http://localhost:16686` | Distributed traces and request flow |
+| API Health | `http://localhost:8080/health` | Service readiness |
 
 ```bash
 curl http://localhost:8080/health
 ```
 
-## 🔐 Security
+## Security
 
-### Implemented
-
-- ✅ JWT token-based authentication
-- ✅ Role-based access control (RBAC)
-- ✅ Input validation and sanitization
-- ✅ Encrypted database connections
-- ✅ CORS protection
-- ✅ Rate limiting middleware
-- ✅ Non-root Docker containers
-- ✅ K8s security policies
-
-### Secrets Management
+- JWT token-based authentication
+- Role-based access control
+- Input validation and sanitization
+- Encrypted database connections
+- CORS protection
+- Rate limiting middleware
+- Non-root Docker containers
+- Kubernetes security policies
+- Environment-based secret management
 
 ```bash
-# Create .env with secrets (never commit)
 cp .env.example .env
 
-# Or use Kubernetes secrets
 kubectl create secret generic summarizer-secrets \
   --from-literal=db_password=secure_password \
   --from-literal=jwt_secret=secure_secret
 ```
 
-## 📈 Performance
+## Deployment
 
-### Optimization Features
-
-- Connection pooling (25 max connections)
-- Redis caching layer
-- Worker pool pattern for concurrency
-- Streaming audio processing
-- Incremental summarization
-- Query optimization with indexes
-
-### Benchmarks
-
-```bash
-make test
-# Detailed performance metrics in coverage report
-```
-
-## 🚀 Deployment
-
-### Local Deployment
+### Local Binary
 
 ```bash
 make build
 ./bin/summarizer-api
 ```
 
-### Docker Deployment
+### Docker
 
 ```bash
 make docker-build
 make docker-up
 ```
 
-### Kubernetes Deployment
+### Kubernetes
 
 ```bash
-kubectl apply -f deployments/kubernetes/api-deployment.yml
-kubectl apply -f deployments/kubernetes/infrastructure.yml
-kubectl apply -f deployments/kubernetes/monitoring.yml
+kubectl create namespace meeting-summarizer
+kubectl apply -f deployments/kubernetes/
+kubectl get pods -n meeting-summarizer
 ```
 
 ### Production Checklist
 
-- [ ] Update JWT_SECRET in .env
-- [ ] Change database password
+- [ ] Rotate `JWT_SECRET`
+- [ ] Change database credentials
 - [ ] Enable HTTPS/TLS
-- [ ] Configure domain name
+- [ ] Configure production domain name
 - [ ] Set up automated backups
-- [ ] Enable log aggregation
+- [ ] Enable centralized log aggregation
 - [ ] Configure alert thresholds
 - [ ] Review RBAC policies
 - [ ] Test disaster recovery
 
-## 📚 Documentation
+## Development Commands
+
+| Command | Description |
+| --- | --- |
+| `make fmt` | Format Go code |
+| `make lint` | Run linter |
+| `make vet` | Run Go vet |
+| `make security-check` | Run security scan |
+| `make build` | Build API binary |
+| `make dev` | Run development server with auto-reload |
+| `make docs` | Generate API docs |
+| `make docker-logs` | Tail API container logs |
+
+## Environment Variables
+
+```env
+SERVER_PORT=8080
+ENVIRONMENT=production
+
+DB_HOST=localhost
+DB_NAME=meeting_summarizer
+DB_USER=postgres
+DB_PASSWORD=secure_password
+
+REDIS_HOST=localhost
+JWT_SECRET=your-secret-key
+
+WHISPER_MODEL=base
+OLLAMA_URL=http://localhost:11434
+OPENAI_API_KEY=sk-...
+
+NATS_URL=nats://localhost:4222
+KAFKA_URL=localhost:9092
+```
+
+See [.env.example](.env.example) for the complete configuration.
+
+## Documentation
 
 - [API Documentation](docs/API.md)
 - [Architecture Guide](docs/ARCHITECTURE.md)
@@ -331,171 +421,47 @@ kubectl apply -f deployments/kubernetes/monitoring.yml
 - [Development Guide](docs/DEVELOPMENT.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
 
-## 🛠️ Development Commands
-
-```bash
-# Code formatting
-make fmt
-
-# Linting
-make lint
-
-# Security scan
-make security-check
-
-# Build binary
-make build
-
-# Run development server with auto-reload
-make dev
-
-# View Docker logs
-make docker-logs
-
-# Generate API docs
-make docs
-```
-
-## 📝 Environment Variables
-
-Key configuration variables:
-
-```env
-# Server
-SERVER_PORT=8080
-ENVIRONMENT=production
-
-# Database
-DB_HOST=localhost
-DB_NAME=meeting_summarizer
-DB_USER=postgres
-DB_PASSWORD=secure_password
-
-# Redis
-REDIS_HOST=localhost
-
-# JWT
-JWT_SECRET=your-secret-key
-
-# AI/ML
-WHISPER_MODEL=base
-OLLAMA_URL=http://localhost:11434
-OPENAI_API_KEY=sk-...
-
-# Infrastructure
-NATS_URL=nats://localhost:4222
-KAFKA_URL=localhost:9092
-```
-
-See `.env.example` for all variables.
-
-## 🚨 Troubleshooting
+## Troubleshooting
 
 ### Database Connection Failed
 
 ```bash
-# Check PostgreSQL is running
 docker ps | grep postgres
-
-# Verify credentials in .env
-# Check connection string format
 ```
+
+Verify the database host, port, username, password, and database name in `.env`.
 
 ### Port Already in Use
 
 ```bash
-# Find process on port 8080
 lsof -i :8080
-
-# Kill the process
 kill -9 <PID>
 ```
 
 ### Docker Issues
 
 ```bash
-# Clear Docker cache
-docker-compose down -v
-
-# Rebuild from scratch
+docker-compose -f deployments/docker/docker-compose.yml down -v
 make docker-clean
 make docker-build
 ```
 
-## 📊 Architecture
+## Contributing
 
-```
-┌─────────────────────────────────────────┐
-│         Client Applications              │
-│  (Web, Mobile, Third-party integrations) │
-└──────────────────┬──────────────────────┘
-                   │
-┌──────────────────┴──────────────────────┐
-│      API Gateway / Load Balancer         │
-│    (Kubernetes Ingress / nginx)          │
-└──────────────────┬──────────────────────┘
-                   │
-┌──────────────────┴──────────────────────┐
-│        REST API / WebSocket              │
-│    (Gin + Gorilla WebSocket)             │
-└──────────────────┬──────────────────────┘
-                   │
-       ┌───────────┼───────────┐
-       │           │           │
-┌──────┴────┐  ┌───┴──────┐  ┌┴─────────┐
-│  Services │  │  Handler │  │Middleware│
-│           │  │           │  │          │
-└──────┬────┘  └───┬──────┘  └┬─────────┘
-       │           │          │
-       └───────────┼──────────┘
-                   │
-┌──────────────────┴──────────────────────┐
-│    Data Access & AI Services            │
-│  (Repository, AI, Streaming)            │
-└──────────────────┬──────────────────────┘
-                   │
-       ┌───────────┼───────────────────┐
-       │           │                   │
-  ┌────┴─────┐ ┌──┴──────┐ ┌─────┴───┐
-  │PostgreSQL│ │ Redis   │ │NATS/Msg │
-  │Database  │ │ Cache   │ │ Broker  │
-  └──────────┘ └─────────┘ └─────────┘
-```
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md), open an issue for larger changes, and keep pull requests focused.
 
-## 📄 License
+## Acknowledgments
 
-MIT License - see LICENSE file for details
+Built with the Go ecosystem, Gin, PostgreSQL, Redis, NATS, Kafka, Docker, Kubernetes, OpenAI Whisper, Ollama, Prometheus, Jaeger, Next.js, React, TypeScript, and Tailwind CSS.
 
-## 🤝 Contributing
+## License
 
-Contributions welcome! See CONTRIBUTING.md for guidelines.
-
-## 📧 Contact
-
-For questions or issues, open a GitHub issue or contact the maintainers.
-
-## 🙏 Acknowledgments
-
-Built with:
-
-- Golang ecosystem
-- Gin web framework
-- PostgreSQL
-- Redis
-- NATS messaging
-- OpenAI Whisper
-- Kubernetes
-
-## 📚 Additional Resources
-
-- [Golang Documentation](https://golang.org/doc/)
-- [Gin Documentation](https://gin-gonic.com/)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-- [Kubernetes Documentation](https://kubernetes.io/docs/)
-- [Docker Documentation](https://docs.docker.com/)
+MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
-**Latest Version**: 1.0.0  
-**Last Updated**: 2026-05-09  
-**Status**: Production Ready ✅"
+<p align="center">
+  <b>Latest Version:</b> 1.0.0 &nbsp;|&nbsp;
+  <b>Last Updated:</b> 2026-05-09 &nbsp;|&nbsp;
+  <b>Status:</b> Production Ready
+</p>
