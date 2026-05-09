@@ -1,0 +1,121 @@
+version: "3.8"
+
+services:
+  api:
+    image: silent-meeting-summarizer:latest
+    container_name: summarizer-api-prod
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_PORT=8080
+      - SERVER_HOST=0.0.0.0
+      - ENVIRONMENT=production
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=meeting_summarizer_prod
+      - DB_USER=postgres
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - NATS_URL=nats://nats:4222
+      - KAFKA_URL=kafka:9092
+      - OLLAMA_URL=http://ollama:11434
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - summarizer-prod-network
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: summarizer-postgres-prod
+    environment:
+      - POSTGRES_DB=meeting_summarizer_prod
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres-prod-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - summarizer-prod-network
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: summarizer-redis-prod
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis-prod-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - summarizer-prod-network
+    restart: always
+
+  nats:
+    image: nats:2.10-alpine
+    container_name: summarizer-nats-prod
+    ports:
+      - "4222:4222"
+    networks:
+      - summarizer-prod-network
+    restart: always
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: summarizer-kafka-prod
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    networks:
+      - summarizer-prod-network
+    restart: always
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: summarizer-zookeeper-prod
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - summarizer-prod-network
+    restart: always
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: summarizer-ollama-prod
+    volumes:
+      - ollama-prod-data:/root/.ollama
+    networks:
+      - summarizer-prod-network
+    restart: always
+
+volumes:
+  postgres-prod-data:
+  redis-prod-data:
+  ollama-prod-data:
+
+networks:
+  summarizer-prod-network:
+    driver: bridge
